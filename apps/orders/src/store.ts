@@ -2,8 +2,8 @@ import { ref } from "vue";
 
 export type OrderStatusFilter = "all" | "pending" | "completed" | "refunded" | "cancelled";
 
-// Internal-only UI state (table filters/pagination) — never shared outside
-// this microfrontend (RFC §9).
+// Internal-only UI state (filters/pagination) — never shared outside this
+// microfrontend (RFC §9).
 const search = ref("");
 const status = ref<OrderStatusFilter>("all");
 const page = ref(0);

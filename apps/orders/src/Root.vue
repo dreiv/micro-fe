@@ -5,18 +5,15 @@ import { on } from "@advancedfrontend/contracts";
 import OrdersTable from "./OrdersTable.vue";
 import OrderDetail from "./OrderDetail.vue";
 
-// Exposed to the shell via Module Federation (exposes: './Root').
-// The shell routes /orders and /orders/:id into this component; we pick the
-// right screen from the current route.
+// Exposed to the shell (exposes: './Root'); the shell routes /orders and
+// /orders/:id here, so we pick the screen from the current route.
 const route = useRoute();
-// The shell routes `${mf.route}/:pathMatch(.*)*`, so the id arrives as
-// `pathMatch` (empty string on the index route, the id on the detail route).
+// Shell routes `${mf.route}/:pathMatch(.*)*`, so the id arrives as `pathMatch`
+// (empty string on the index route).
 const isDetail = computed(() => route.params.pathMatch !== undefined && route.params.pathMatch !== "");
 
-// Cross-microfrontend events: when a user is deactivated (from the Users
-// screen, possibly in another tab), refresh the orders table and show a
-// transient banner. `refreshKey` is bumped to force OrdersTable to remount,
-// which re-runs its `watch(..., { immediate: true })` load.
+// Cross-microfrontend: on user deactivation (possibly from another tab),
+// bump `refreshKey` to force OrdersTable to remount and re-run its load.
 const refreshKey = ref(0);
 const banner = ref<string | null>(null);
 
@@ -25,7 +22,6 @@ const unsubscribe = on("user:deactivated", ({ userName }) => {
   banner.value = `Refreshed orders because ${userName} was deactivated`;
 });
 
-// Clean up the listener when this screen is torn down.
 onBeforeUnmount(() => unsubscribe());
 </script>
 

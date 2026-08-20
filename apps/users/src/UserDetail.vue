@@ -9,8 +9,7 @@ import type { UserRecord } from "./mocks/handlers";
 import type { Role } from "@advancedfrontend/contracts";
 
 const route = useRoute();
-// The shell routes `${mf.route}/:pathMatch(.*)*`, so the id arrives as
-// `pathMatch`.
+// Shell routes `${mf.route}/:pathMatch(.*)*`, so the id arrives as `pathMatch`.
 const id = computed(() => String(route.params.pathMatch ?? ""));
 
 const { user: sessionUser } = useSession();

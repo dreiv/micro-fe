@@ -2,9 +2,8 @@ import { ref } from "vue";
 
 export type StatusFilter = "all" | "active" | "inactive";
 
-// Internal-only UI state (table filters/pagination) — never shared outside
-// this microfrontend (RFC §9). Module-scope refs so the table and detail
-// screens share the same filter state while this microfrontend is loaded.
+// Internal-only UI state (filters/pagination) — never shared outside this
+// microfrontend (RFC §9). Module-scope so table and detail share it.
 const search = ref("");
 const status = ref<StatusFilter>("all");
 const page = ref(0);

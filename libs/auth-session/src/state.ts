@@ -5,13 +5,11 @@ type Listener = () => void;
 
 type SessionState = { user: User | null; token: string | null };
 
-// The session must be a true singleton shared across the shell and every
-// microfrontend. Each microfrontend bundles its own copy of this lib (Module
-// Federation can't share a workspace source package), so we back the state
-// and listener set with a window global — the same pattern the event bus
-// uses — meaning all copies read/write the same reactive object. `vue` is
-// shared, so the reactive proxy is created by one Vue instance and works
-// across every copy.
+// Must be a true singleton across shell and every microfrontend. Each
+// microfrontend bundles its own copy of this lib (MF can't share a workspace
+// source package), so state and listeners are backed by a window global —
+// same pattern as the event bus — so all copies read/write the same reactive
+// object. `vue` is shared, so one reactive proxy works across every copy.
 type GlobalSession = { state: SessionState; listeners: Set<Listener> };
 
 function getGlobal(): GlobalSession {

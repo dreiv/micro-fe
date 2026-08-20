@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { useAuditEntries } from "./store";
 
-// Team C doesn't import users, orders, or the shell — it only listens on the
-// shared event bus. This is the whole point of step 10: a brand-new team
-// plugs into existing events with zero changes anywhere else in the
-// codebase. The actual listening happens in ./store at module scope.
+// No imports of other microfrontends — we only listen on the shared event bus
+// (registered at module scope in ./store).
 const entries = useAuditEntries();
 </script>
 

@@ -37,10 +37,8 @@ const { user, isAuthenticated } = useSession();
 </template>
 
 <style>
-/* Global reset — must NOT be scoped: `body` and `*` live outside this
-   component (in index.html), so a scoped selector like `body[data-v-x]`
-   would never match and the browser defaults (8px body margin,
-   content-box) would leak through. */
+/* Global reset — must NOT be scoped: `body`/`*` live outside this component,
+   so a scoped selector would never match. */
 * {
   box-sizing: border-box;
 }
@@ -52,8 +50,7 @@ body {
   background: #f5f6f8;
 }
 
-/* Global (not scoped): the h1s live in remote components, so a scoped
-   selector wouldn't reach them. Matches the reference styles.css. */
+/* Not scoped: the h1s live in remote components. */
 .content h1 {
   margin-top: 0;
 }

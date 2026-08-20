@@ -5,13 +5,12 @@ import MicrofrontendErrorBoundary from "./MicrofrontendErrorBoundary.vue";
 
 const props = defineProps<{ remoteName: string }>();
 
-// Bumping this forces a full remount of the boundary below: a fresh
-// error-boundary state and a fresh async component, so "Retry" actually
-// retries instead of replaying the same failed promise.
+// Bumping this forces a full remount of the boundary: fresh error-boundary
+// state and fresh async component, so "Retry" actually retries.
 const attempt = ref(0);
 
-// Cache one async component per remote so the component identity is stable
-// across renders (a new object each render would force a remount every time).
+// One async component per remote, so component identity is stable across
+// renders (a new object each render would force a remount every time).
 const remoteComponentCache = new Map<string, ReturnType<typeof defineAsyncComponent>>();
 
 function getRemoteComponent(remoteName: string) {
@@ -22,7 +21,6 @@ function getRemoteComponent(remoteName: string) {
       if (!mod) {
         throw new Error(`Remote "${remoteName}" did not return a module`);
       }
-      // The exposed './Root' module's default export is the Vue component itself.
       return mod.default as any;
     });
     remoteComponentCache.set(remoteName, Component);
@@ -31,16 +29,12 @@ function getRemoteComponent(remoteName: string) {
 }
 
 function retry() {
-  // Drop our own cached async component so a fresh one (and a fresh load
-  // promise) is created on remount.
   remoteComponentCache.delete(props.remoteName);
-  // Clearing our own cache and remounting isn't enough on its own: Module
-  // Federation's runtime keeps its own separate, global record of remote-entry
-  // loads on `window.__GLOBAL_LOADING_REMOTE_ENTRY__` (keyed "name:entry"),
-  // and a failed load stays cached there — loadRemote() would just return the
-  // same rejected promise again without this. It's an internal/undocumented
-  // global, not part of the public API, so we only touch keys for the one
-  // remote that's retrying.
+  // Not enough on its own: the MF runtime keeps its own global record of
+  // remote-entry loads on `window.__GLOBAL_LOADING_REMOTE_ENTRY__` (keyed
+  // "name:entry"), and a failed load stays cached there — loadRemote() would
+  // return the same rejected promise. Internal/undocumented global, so we
+  // only touch keys for the remote that's retrying.
   const globalLoading = (window as unknown as Record<string, Record<string, unknown>>).__GLOBAL_LOADING_REMOTE_ENTRY__;
   if (globalLoading) {
     Object.keys(globalLoading)

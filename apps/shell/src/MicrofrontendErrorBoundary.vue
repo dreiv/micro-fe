@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { ref, onErrorCaptured } from "vue";
 
-// A microfrontend failing to load or throwing during render must never take
-// down the shell, the sidebar, or any other microfrontend (RFC §12).
-// Vue has no built-in error boundary; `onErrorCaptured` is the equivalent of
-// React's `componentDidCatch`/`getDerivedStateFromError`.
+// A microfrontend failing to load or throwing must never take down the shell,
+// sidebar, or other microfrontends (RFC §12). Vue has no built-in error
+// boundary; `onErrorCaptured` is the equivalent.
 const props = defineProps<{ name: string }>();
 const emit = defineEmits<{ (e: "retry"): void }>();
 
@@ -13,7 +12,7 @@ const hasError = ref(false);
 onErrorCaptured((error) => {
   console.error(`Microfrontend "${props.name}" failed to load or crashed:`, error);
   hasError.value = true;
-  // Return false to stop the error propagating up to the shell.
+  // false stops the error propagating up to the shell.
   return false;
 });
 </script>

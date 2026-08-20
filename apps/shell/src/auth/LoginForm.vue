@@ -13,8 +13,8 @@ async function handleSubmit(e: Event) {
   error.value = null;
   submitting.value = true;
   try {
-    // No onSuccess callback needed: App re-renders on its own once
-    // useSession() picks up the new session.
+    // No onSuccess callback needed: App re-renders once useSession() picks
+    // up the new session.
     await login(email.value, password.value);
   } catch {
     error.value = 'Invalid email or password';

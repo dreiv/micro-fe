@@ -4,12 +4,11 @@ import { useRoute } from "vue-router";
 import UsersTable from "./UsersTable.vue";
 import UserDetail from "./UserDetail.vue";
 
-// Exposed to the shell via Module Federation (exposes: './Root').
-// The shell routes /users and /users/:id into this component; we pick the
-// right screen from the current route.
+// Exposed to the shell (exposes: './Root'); the shell routes /users and
+// /users/:id here, so we pick the screen from the current route.
 const route = useRoute();
-// The shell routes `${mf.route}/:pathMatch(.*)*`, so the id arrives as
-// `pathMatch` (empty string on the index route, the id on the detail route).
+// Shell routes `${mf.route}/:pathMatch(.*)*`, so the id arrives as `pathMatch`
+// (empty string on the index route).
 const isDetail = computed(() => route.params.pathMatch !== undefined && route.params.pathMatch !== "");
 </script>
 

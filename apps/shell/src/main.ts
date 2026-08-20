@@ -11,16 +11,14 @@ import "@advancedfrontend/ui/tokens.css";
 async function main() {
   const manifest = await fetchManifest();
 
-  // Register each remote from the manifest at runtime (not build-time).
-  // `type: "module"` because the Vite plugin emits remoteEntry.js as an ES module.
+  // `type: "module"` — the Vite plugin emits remoteEntry.js as an ES module.
   registerRemotes(
     manifest.microfrontends.map((mf) => ({ name: mf.name, entry: mf.entry, type: "module" })),
   );
 
-  // Each microfrontend exposes its own mock handlers the same way it exposes
-  // its screen, so the shell can combine them into a single backend instead of
-  // two mock servers. Promise.allSettled: one broken entry only loses that
-  // microfrontend's handlers, not the shell's ability to boot.
+  // Each microfrontend exposes its mock handlers like its screen, so the
+  // shell combines them into one backend. allSettled: one broken entry only
+  // loses that microfrontend's handlers, not the shell's boot.
   const remoteHandlerResults = await Promise.allSettled(
     manifest.microfrontends.map(async (mf) => {
       const mod = await loadRemote<{ handlers: RequestHandler[] }>(`${mf.name}/mockHandlers`);
@@ -38,13 +36,11 @@ async function main() {
     return result.value;
   });
 
-  // Mocked backend (MSW) intercepts /login, /session/restore, and every
-  // microfrontend's /api/* endpoints.
   const worker = createWorker(remoteHandlerLists.flat());
   await worker.start({ onUnhandledRequest: "bypass" });
 
-  // Re-issue a token for a previously logged-in user so the session
-  // survives a real page reload (token itself never touches storage).
+  // Re-issue a token so the session survives a real page reload (the token
+  // itself never touches storage).
   await restoreSession();
 
   const routes = [

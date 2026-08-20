@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// Step 2: standalone hello page. No Module Federation yet.
 </script>
 
 <template>

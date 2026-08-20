@@ -7,8 +7,7 @@ import { fetchOrder, refundOrder, cancelOrder } from "./api";
 import type { OrderRecord } from "./mocks/handlers";
 
 const route = useRoute();
-// The shell routes `${mf.route}/:pathMatch(.*)*`, so the id arrives as
-// `pathMatch`.
+// Shell routes `${mf.route}/:pathMatch(.*)*`, so the id arrives as `pathMatch`.
 const id = computed(() => String(route.params.pathMatch ?? ""));
 
 const { user } = useSession();

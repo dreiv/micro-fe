@@ -36,7 +36,6 @@ function buildSeedOrders(): OrderRecord[] {
   return orders;
 }
 
-// Module-scope, mutable — a simple in-memory "database" for the demo.
 const orders: OrderRecord[] = buildSeedOrders();
 
 export const handlers = [

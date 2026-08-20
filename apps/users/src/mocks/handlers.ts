@@ -52,8 +52,6 @@ function buildSeedUsers(): UserRecord[] {
   return users;
 }
 
-// Module-scope, mutable — a simple in-memory "database" for the demo.
-// Resets whenever the dev server restarts.
 const users: UserRecord[] = buildSeedUsers();
 
 export const handlers = [
