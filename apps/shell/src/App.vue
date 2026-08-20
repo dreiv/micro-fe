@@ -16,6 +16,7 @@ const { user, isAuthenticated } = useSession();
   <div v-else class="app">
     <header class="header">
       <span class="logo">Backoffice</span>
+      <span class="env-badge">local</span>
       <span class="spacer" />
       <NotificationCenter />
       <span class="profile">{{ user?.name }}</span>
@@ -23,7 +24,8 @@ const { user, isAuthenticated } = useSession();
     </header>
     <div class="body">
       <aside class="sidebar">
-        <RouterLink v-for="mf in manifest.microfrontends" :key="mf.name" :to="mf.route" class="sidebar-link">
+        <RouterLink v-for="mf in manifest.microfrontends" :key="mf.name" :to="mf.route" class="sidebar-link"
+          active-class="sidebar-link--active">
           {{ mf.navLabel }}
         </RouterLink>
       </aside>
@@ -34,7 +36,11 @@ const { user, isAuthenticated } = useSession();
   </div>
 </template>
 
-<style scoped>
+<style>
+/* Global reset — must NOT be scoped: `body` and `*` live outside this
+   component (in index.html), so a scoped selector like `body[data-v-x]`
+   would never match and the browser defaults (8px body margin,
+   content-box) would leak through. */
 * {
   box-sizing: border-box;
 }
@@ -46,6 +52,14 @@ body {
   background: #f5f6f8;
 }
 
+/* Global (not scoped): the h1s live in remote components, so a scoped
+   selector wouldn't reach them. Matches the reference styles.css. */
+.content h1 {
+  margin-top: 0;
+}
+</style>
+
+<style scoped>
 .app {
   display: flex;
   flex-direction: column;
@@ -73,15 +87,21 @@ body {
 
 .profile {
   font-size: 14px;
+  color: #d1d5db;
 }
 
 .logout-link {
   background: none;
   border: none;
-  color: #fff;
+  color: #d1d5db;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   text-decoration: underline;
+  padding: 0;
+}
+
+.logout-link:hover {
+  color: #fff;
 }
 
 .body {
@@ -94,7 +114,7 @@ body {
   width: 200px;
   background: #fff;
   border-right: 1px solid #e5e7eb;
-  padding: 12px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -113,9 +133,24 @@ body {
   background: #f3f4f6;
 }
 
+.sidebar-link--active {
+  background: #e5e7eb;
+  font-weight: 600;
+}
+
 .content {
   flex: 1;
-  padding: 20px;
+  padding: 32px;
   overflow: auto;
+}
+
+.env-badge {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #374151;
+  color: #9ca3af;
 }
 </style>
