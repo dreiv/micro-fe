@@ -2,7 +2,7 @@
 import { computed, ref, watch } from "vue";
 import { RouterLink } from "vue-router";
 import { useSession } from "@advancedfrontend/auth-session";
-import { Button } from "@advancedfrontend/ui";
+import { Button, Pagination } from "@advancedfrontend/ui";
 import { useOrdersFilters } from "./store";
 import { fetchOrders, refundOrder, cancelOrder } from "./api";
 import type { OrderRecord } from "./mocks/handlers";
@@ -37,6 +37,12 @@ watch([search, status, page], load, { immediate: true });
 
 const pageCount = computed(() => Math.max(1, Math.ceil(total.value / PAGE_SIZE)));
 
+// The store keeps a 0-based page; the Pagination component is 1-based.
+const page1 = computed(() => page.value + 1);
+function setPage1(value: number) {
+  setPage(value - 1);
+}
+
 function canAct(row: OrderRecord) {
   return row.status === "pending" || row.status === "completed";
 }
@@ -59,8 +65,11 @@ async function onCancel(id: string) {
 <template>
   <div>
     <div class="toolbar">
-      <input placeholder="Search by customer or order id" :value="search"
-        @input="setSearch(($event.target as HTMLInputElement).value)" />
+      <input
+        placeholder="Search by customer or order id"
+        :value="search"
+        @input="setSearch(($event.target as HTMLInputElement).value)"
+      />
       <select :value="status" @change="setStatus(($event.target as HTMLSelectElement).value)">
         <option value="all">All statuses</option>
         <option value="pending">Pending</option>
@@ -91,18 +100,16 @@ async function onCancel(id: string) {
             <td>{{ row.status }}</td>
             <td v-if="isAdmin">
               <template v-if="canAct(row)">
-                <Button @click="onRefund(row.id)">Refund</Button>
-                <Button @click="onCancel(row.id)">Cancel</Button>
+                <div class="row-actions">
+                  <Button @click="onRefund(row.id)">Refund</Button>
+                  <Button @click="onCancel(row.id)">Cancel</Button>
+                </div>
               </template>
             </td>
           </tr>
         </tbody>
       </table>
-      <div class="pagination">
-        <button :disabled="page === 0" @click="setPage(page - 1)">Previous</button>
-        <span>Page {{ page + 1 }} of {{ pageCount }}</span>
-        <button :disabled="page + 1 >= pageCount" @click="setPage(page + 1)">Next</button>
-      </div>
+      <Pagination :page="page1" :total-pages="pageCount" @update:page="setPage1" />
     </template>
   </div>
 </template>
@@ -119,6 +126,8 @@ async function onCancel(id: string) {
   padding: var(--space-2);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
+  background: var(--color-input-bg);
+  color: var(--color-text);
   font-size: var(--font-size-base);
 }
 
@@ -141,11 +150,8 @@ async function onCancel(id: string) {
   text-transform: uppercase;
 }
 
-.pagination {
+.row-actions {
   display: flex;
-  align-items: center;
   gap: var(--space-2);
-  margin-top: var(--space-3);
-  font-size: var(--font-size-sm);
 }
 </style>

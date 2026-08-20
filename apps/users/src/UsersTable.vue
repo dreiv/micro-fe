@@ -2,7 +2,7 @@
 import { computed, ref, watch } from "vue";
 import { RouterLink } from "vue-router";
 import { useSession } from "@advancedfrontend/auth-session";
-import { Button } from "@advancedfrontend/ui";
+import { Button, Pagination } from "@advancedfrontend/ui";
 import { useUsersFilters } from "./store";
 import { fetchUsers, activateUser, deactivateUser } from "./api";
 import { emitUserDeactivated } from "./events";
@@ -38,6 +38,12 @@ watch([search, status, page], load, { immediate: true });
 
 const pageCount = computed(() => Math.max(1, Math.ceil(total.value / PAGE_SIZE)));
 
+// The store keeps a 0-based page; the Pagination component is 1-based.
+const page1 = computed(() => page.value + 1);
+function setPage1(value: number) {
+  setPage(value - 1);
+}
+
 async function onActivate(id: string) {
   await activateUser(id);
   await load();
@@ -53,8 +59,11 @@ async function onDeactivate(id: string) {
 <template>
   <div>
     <div class="toolbar">
-      <input placeholder="Search by name or email" :value="search"
-        @input="setSearch(($event.target as HTMLInputElement).value)" />
+      <input
+        placeholder="Search by name or email"
+        :value="search"
+        @input="setSearch(($event.target as HTMLInputElement).value)"
+      />
       <select :value="status" @change="setStatus(($event.target as HTMLSelectElement).value)">
         <option value="all">All statuses</option>
         <option value="active">Active</option>
@@ -82,17 +91,15 @@ async function onDeactivate(id: string) {
             <td>{{ row.role }}</td>
             <td>{{ row.status }}</td>
             <td v-if="isAdmin">
-              <Button v-if="row.status === 'active'" @click="onDeactivate(row.id)">Deactivate</Button>
+              <Button v-if="row.status === 'active'" @click="onDeactivate(row.id)"
+                >Deactivate</Button
+              >
               <Button v-else @click="onActivate(row.id)">Activate</Button>
             </td>
           </tr>
         </tbody>
       </table>
-      <div class="pagination">
-        <button :disabled="page === 0" @click="setPage(page - 1)">Previous</button>
-        <span>Page {{ page + 1 }} of {{ pageCount }}</span>
-        <button :disabled="page + 1 >= pageCount" @click="setPage(page + 1)">Next</button>
-      </div>
+      <Pagination :page="page1" :total-pages="pageCount" @update:page="setPage1" />
     </template>
   </div>
 </template>
@@ -109,6 +116,8 @@ async function onDeactivate(id: string) {
   padding: var(--space-2);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
+  background: var(--color-input-bg);
+  color: var(--color-text);
   font-size: var(--font-size-base);
 }
 
@@ -129,13 +138,5 @@ async function onDeactivate(id: string) {
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
   text-transform: uppercase;
-}
-
-.pagination {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  margin-top: var(--space-3);
-  font-size: var(--font-size-sm);
 }
 </style>

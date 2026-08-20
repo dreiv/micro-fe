@@ -34,9 +34,9 @@ onBeforeUnmount(() => unsubscribe());
 
 <style scoped>
 .event-banner {
-  background: #ecfdf5;
-  border: 1px solid #10b981;
-  color: #065f46;
+  background: var(--color-banner-bg);
+  border: 1px solid var(--color-banner-border);
+  color: var(--color-banner-text);
   padding: 8px 12px;
   border-radius: 6px;
   font-size: 14px;

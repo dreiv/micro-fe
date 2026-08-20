@@ -16,16 +16,22 @@ const { user, isAuthenticated } = useSession();
   <div v-else class="app">
     <header class="header">
       <span class="logo">Backoffice</span>
-      <span class="env-badge">local</span>
       <span class="spacer" />
-      <NotificationCenter />
-      <span class="profile">{{ user?.name }}</span>
-      <button class="logout-link" @click="logout">Log out</button>
+      <div class="header-right">
+        <NotificationCenter />
+        <span class="profile">{{ user?.name }}</span>
+        <button class="logout-link" @click="logout">Log out</button>
+      </div>
     </header>
     <div class="body">
       <aside class="sidebar">
-        <RouterLink v-for="mf in manifest.microfrontends" :key="mf.name" :to="mf.route" class="sidebar-link"
-          active-class="sidebar-link--active">
+        <RouterLink
+          v-for="mf in manifest.microfrontends"
+          :key="mf.name"
+          :to="mf.route"
+          class="sidebar-link"
+          active-class="sidebar-link--active"
+        >
           {{ mf.navLabel }}
         </RouterLink>
       </aside>
@@ -45,9 +51,14 @@ const { user, isAuthenticated } = useSession();
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  color: #1a1a1a;
-  background: #f5f6f8;
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  color: var(--color-text);
+  background: var(--color-bg);
 }
 
 /* Not scoped: the h1s live in remote components. */
@@ -69,8 +80,8 @@ body {
   gap: 12px;
   padding: 0 20px;
   height: 56px;
-  background: #1f2937;
-  color: #fff;
+  background: var(--color-header-bg);
+  color: var(--color-header-text);
 }
 
 .logo {
@@ -82,15 +93,21 @@ body {
   flex: 1;
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .profile {
   font-size: 14px;
-  color: #d1d5db;
+  color: var(--color-header-text-muted);
 }
 
 .logout-link {
   background: none;
   border: none;
-  color: #d1d5db;
+  color: var(--color-header-text-muted);
   cursor: pointer;
   font-size: 13px;
   text-decoration: underline;
@@ -98,7 +115,7 @@ body {
 }
 
 .logout-link:hover {
-  color: #fff;
+  color: var(--color-header-text);
 }
 
 .body {
@@ -109,8 +126,8 @@ body {
 
 .sidebar {
   width: 200px;
-  background: #fff;
-  border-right: 1px solid #e5e7eb;
+  background: var(--color-sidebar-bg);
+  border-right: 1px solid var(--color-sidebar-border);
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -121,17 +138,17 @@ body {
   display: block;
   padding: 8px 12px;
   border-radius: 6px;
-  color: #374151;
+  color: var(--color-sidebar-link);
   text-decoration: none;
   font-size: 14px;
 }
 
 .sidebar-link:hover {
-  background: #f3f4f6;
+  background: var(--color-sidebar-link-hover-bg);
 }
 
 .sidebar-link--active {
-  background: #e5e7eb;
+  background: var(--color-sidebar-link-active-bg);
   font-weight: 600;
 }
 
@@ -139,15 +156,5 @@ body {
   flex: 1;
   padding: 32px;
   overflow: auto;
-}
-
-.env-badge {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 2px 8px;
-  border-radius: 10px;
-  background: #374151;
-  color: #9ca3af;
 }
 </style>

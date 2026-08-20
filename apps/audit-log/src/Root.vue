@@ -22,7 +22,7 @@ const entries = useAuditEntries();
 
 <style scoped>
 .empty {
-  color: #6b7280;
+  color: var(--color-text-muted);
   font-size: 14px;
 }
 
@@ -36,15 +36,15 @@ const entries = useAuditEntries();
 }
 
 .item {
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 6px;
   padding: 10px 12px;
   font-size: 14px;
 }
 
 .time {
-  color: #6b7280;
+  color: var(--color-text-muted);
   font-size: 12px;
   margin-right: 8px;
 }

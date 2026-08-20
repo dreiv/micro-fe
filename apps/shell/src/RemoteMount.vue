@@ -35,7 +35,8 @@ function retry() {
   // "name:entry"), and a failed load stays cached there — loadRemote() would
   // return the same rejected promise. Internal/undocumented global, so we
   // only touch keys for the remote that's retrying.
-  const globalLoading = (window as unknown as Record<string, Record<string, unknown>>).__GLOBAL_LOADING_REMOTE_ENTRY__;
+  const globalLoading = (window as unknown as Record<string, Record<string, unknown>>)
+    .__GLOBAL_LOADING_REMOTE_ENTRY__;
   if (globalLoading) {
     Object.keys(globalLoading)
       .filter((key) => key.startsWith(`${props.remoteName}:`))

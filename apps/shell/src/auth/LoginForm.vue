@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { Button } from '@advancedfrontend/ui';
-import { login } from './login';
+import { ref } from "vue";
+import { Button } from "@advancedfrontend/ui";
+import { login } from "./login";
 
-const email = ref('admin@example.com');
-const password = ref('password');
+const email = ref("admin@example.com");
+const password = ref("password");
 const error = ref<string | null>(null);
 const submitting = ref(false);
 
@@ -17,7 +17,7 @@ async function handleSubmit(e: Event) {
     // up the new session.
     await login(email.value, password.value);
   } catch {
-    error.value = 'Invalid email or password';
+    error.value = "Invalid email or password";
   } finally {
     submitting.value = false;
   }
@@ -38,7 +38,7 @@ async function handleSubmit(e: Event) {
       </label>
       <p v-if="error" class="login-error">{{ error }}</p>
       <Button type="submit" :disabled="submitting">
-        {{ submitting ? 'Signing in…' : 'Sign in' }}
+        {{ submitting ? "Signing in…" : "Sign in" }}
       </Button>
       <p class="login-hint">
         Try admin@example.com / password (admin) or viewer@example.com / password (viewer).
@@ -84,12 +84,14 @@ async function handleSubmit(e: Event) {
   padding: var(--space-2);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
+  background: var(--color-input-bg);
+  color: var(--color-text);
   font-size: var(--font-size-base);
 }
 
 .login-error {
   margin: 0;
-  color: #dc2626;
+  color: var(--color-danger);
   font-size: var(--font-size-sm);
 }
 

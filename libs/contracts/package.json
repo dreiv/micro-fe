@@ -2,8 +2,8 @@
   "name": "@advancedfrontend/contracts",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "description": "Shared types (User, Role) and the typed cross-app event bus.",
+  "type": "module",
   "exports": {
     ".": "./src/index.ts"
   }

@@ -2,8 +2,8 @@
   "name": "@advancedfrontend/auth-session",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "description": "Session store: read-only useSession() for microfrontends, write-only _setSession for the shell.",
+  "type": "module",
   "exports": {
     ".": "./src/index.ts",
     "./internal": "./src/internal.ts"

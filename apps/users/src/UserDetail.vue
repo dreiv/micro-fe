@@ -87,5 +87,7 @@ async function onRoleChange(e: Event) {
   padding: var(--space-2);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
+  background: var(--color-input-bg);
+  color: var(--color-text);
 }
 </style>

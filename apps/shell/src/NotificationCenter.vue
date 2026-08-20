@@ -24,9 +24,7 @@ on("user:deactivated", ({ userName, by }) => {
       </span>
     </button>
     <div v-if="open" class="notification-list">
-      <p v-if="notifications.length === 0" class="notification-empty">
-        No notifications yet.
-      </p>
+      <p v-if="notifications.length === 0" class="notification-empty">No notifications yet.</p>
       <p v-for="n in notifications" :key="n.id" class="notification-item">
         {{ n.message }}
       </p>
@@ -45,7 +43,7 @@ on("user:deactivated", ({ userName, by }) => {
   border: none;
   font-size: 18px;
   cursor: pointer;
-  color: #d1d5db;
+  color: var(--color-header-text-muted);
   padding: 4px;
 }
 
@@ -53,7 +51,7 @@ on("user:deactivated", ({ userName, by }) => {
   position: absolute;
   top: -2px;
   right: -2px;
-  background: #dc2626;
+  background: var(--color-danger);
   color: #fff;
   font-size: 10px;
   line-height: 1;
@@ -69,9 +67,9 @@ on("user:deactivated", ({ userName, by }) => {
   width: 280px;
   max-height: 300px;
   overflow: auto;
-  background: #fff;
-  color: #1a1a1a;
-  border: 1px solid #e5e7eb;
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 10;
@@ -81,7 +79,7 @@ on("user:deactivated", ({ userName, by }) => {
   margin: 0;
   padding: 10px 12px;
   font-size: 13px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .notification-item:last-child {
@@ -92,6 +90,6 @@ on("user:deactivated", ({ userName, by }) => {
   margin: 0;
   padding: 10px 12px;
   font-size: 13px;
-  color: #6b7280;
+  color: var(--color-text-muted);
 }
 </style>

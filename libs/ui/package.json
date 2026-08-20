@@ -2,8 +2,8 @@
   "name": "@advancedfrontend/ui",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "description": "Design tokens (CSS variables) + a Button and a Tooltip.",
+  "type": "module",
   "exports": {
     ".": "./src/index.ts",
     "./tokens.css": "./src/tokens.css"
