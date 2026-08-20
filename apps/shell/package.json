@@ -8,11 +8,16 @@
     "build": "vp build",
     "preview": "vp preview"
   },
+  "dependencies": {
+    "@module-federation/runtime": "^2.8.2"
+  },
   "devDependencies": {
+    "@module-federation/vite": "catalog:",
     "@vitejs/plugin-vue": "6.0.8",
     "typescript": "^7.0.2",
     "vite": "catalog:",
     "vite-plus": "catalog:",
-    "vue": "3.5.41"
+    "vue": "3.5.41",
+    "vue-router": "catalog:"
   }
 }

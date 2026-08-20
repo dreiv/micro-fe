@@ -7,8 +7,10 @@ packages:
 catalogMode: prefer
 
 catalog:
+  "@module-federation/vite": ^1.20.7
   "@types/node": ^24
   typescript: ^7.0.2
+  vue-router: ^5.2.0
   vite: npm:@voidzero-dev/vite-plus-core@0.2.9
   vite-plus: 0.2.9
 overrides:
