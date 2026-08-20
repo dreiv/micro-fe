@@ -7,10 +7,10 @@ import { fetchUser, activateUser, deactivateUser, setUserRole } from "./api";
 import { emitUserDeactivated } from "./events";
 import type { UserRecord } from "./mocks/handlers";
 import type { Role } from "@advancedfrontend/contracts";
+import { getTailParam } from "@advancedfrontend/contracts";
 
 const route = useRoute();
-// Shell routes `${mf.route}/:pathMatch(.*)*`, so the id arrives as `pathMatch`.
-const id = computed(() => String(route.params.pathMatch ?? ""));
+const id = computed(() => getTailParam(route) ?? "");
 
 const { user: sessionUser } = useSession();
 const isAdmin = computed(() => sessionUser.value?.roles.includes("admin") ?? false);

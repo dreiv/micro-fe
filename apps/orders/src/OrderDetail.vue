@@ -5,10 +5,10 @@ import { useSession } from "@advancedfrontend/auth-session";
 import { Button } from "@advancedfrontend/ui";
 import { fetchOrder, refundOrder, cancelOrder } from "./api";
 import type { OrderRecord } from "./mocks/handlers";
+import { getTailParam } from "@advancedfrontend/contracts";
 
 const route = useRoute();
-// Shell routes `${mf.route}/:pathMatch(.*)*`, so the id arrives as `pathMatch`.
-const id = computed(() => String(route.params.pathMatch ?? ""));
+const id = computed(() => getTailParam(route) ?? "");
 
 const { user } = useSession();
 const isAdmin = computed(() => user.value?.roles.includes("admin") ?? false);

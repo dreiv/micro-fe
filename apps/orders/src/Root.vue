@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { computed, ref, onBeforeUnmount } from "vue";
 import { useRoute } from "vue-router";
-import { on } from "@advancedfrontend/contracts";
+import { on, getTailParam } from "@advancedfrontend/contracts";
 import OrdersTable from "./OrdersTable.vue";
 import OrderDetail from "./OrderDetail.vue";
 
 // Exposed to the shell (exposes: './Root'); the shell routes /orders and
 // /orders/:id here, so we pick the screen from the current route.
 const route = useRoute();
-// Shell routes `${mf.route}/:pathMatch(.*)*`, so the id arrives as `pathMatch`
-// (empty string on the index route).
-const isDetail = computed(() => route.params.pathMatch !== undefined && route.params.pathMatch !== "");
+const isDetail = computed(() => getTailParam(route) !== null);
 
 // Cross-microfrontend: on user deactivation (possibly from another tab),
 // bump `refreshKey` to force OrdersTable to remount and re-run its load.

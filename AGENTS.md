@@ -30,7 +30,7 @@ Notes:
 
 - **Shell is the only entry point.** It fetches `apps/shell/public/manifest.json`, calls `registerRemotes(...)`, and lazily `loadRemote()`s each remote's `Root` when you navigate to its route. No build-time coupling — a downed remote shows a fallback while the rest of the shell works.
 - **Remotes never import each other.** They communicate only through the typed event bus in `@advancedfrontend/contracts` (backed by `BroadcastChannel`, so events cross tabs).
-- **Routing is shell-owned.** The shell builds routes as `${mf.route}/:pathMatch(.*)*` and reads the manifest via `inject("manifest")`. A detail id arrives as **`route.params.pathMatch`** (empty string on the index route) — guard with `!== undefined && !== ""`.
+- **Routing is shell-owned.** The shell builds routes as `${mf.route}/:pathMatch(.*)*` and reads the manifest via `inject("manifest")`. A detail id arrives as **`route.params.pathMatch`** — Vue Router always returns it as a `string[]` (empty array on the index route, one element on a detail route), **never a plain string**. Read it with `getTailParam`/`getTailSegments` from `@advancedfrontend/contracts` — never by comparing it to `""` (that comparison is always true and was a real bug).
 - **State is plain Vue reactivity** (no Pinia). Per-app `store.ts` holds UI-only state via module-scope `ref`s + a `useXxxFilters()` composable. Cross-app shared state lives in the libs, backed by **window globals**.
 - **MSW is the entire backend** — there is no real server. Each app exposes `./mockHandlers`; the shell loads them via `loadRemote` (`Promise.allSettled`) and combines them into one worker.
 
@@ -53,5 +53,5 @@ Notes:
 - **MF `name` ≠ folder ≠ route** for audit-log: MF name `auditLog`, folder `audit-log`, route `/audit-log`. The `manifest.json` `name` must equal the MF `name` or `registerRemotes`/`loadRemote` break.
 - **Retry must clear two caches** (see `RemoteMount.vue`): the local `remoteComponentCache` **and** the MF runtime's internal `window.__GLOBAL_LOADING_REMOTE_ENTRY__` keys starting with `${remoteName}:`, or `loadRemote` returns the same rejected promise.
 - **Standalone `App.vue`s are stubs** (`users`/`orders` just render an `<h1>`); the real screens are the `Root.vue`s. Don't add real UI to `App.vue` expecting it to show in the shell.
-- **`pnpm-workspace.yaml` has `allowBuilds: msw: set this to true or false`** — a non-standard key with a literal placeholder string. It's inert; don't trust it or "fix" it into a boolean without confirming intent.
+- **`pnpm-workspace.yaml` `allowBuilds: msw: true`** — records that msw's postinstall (which sets up the mock service worker file) is allowed to run. The key is non-standard (pnpm does not read it), so it's inert documentation — don't treat it as a real pnpm setting or remove it.
 - The DTS warning `TS6054 ... Root.vue has an unsupported extension` is non-fatal (falls back to exposed files).
