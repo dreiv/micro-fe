@@ -11,6 +11,12 @@
       "entry": "http://localhost:4202/remoteEntry.js",
       "route": "/orders",
       "navLabel": "Orders"
+    },
+    {
+      "name": "auditLog",
+      "entry": "http://localhost:4203/remoteEntry.js",
+      "route": "/audit-log",
+      "navLabel": "Audit Log"
     }
   ]
 }
