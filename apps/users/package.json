@@ -8,6 +8,12 @@
     "build": "vp build",
     "preview": "vp preview"
   },
+  "dependencies": {
+    "@advancedfrontend/auth-session": "workspace:*",
+    "@advancedfrontend/contracts": "workspace:*",
+    "@advancedfrontend/ui": "workspace:*",
+    "msw": "^2.15.0"
+  },
   "devDependencies": {
     "@module-federation/vite": "catalog:",
     "@vitejs/plugin-vue": "6.0.8",

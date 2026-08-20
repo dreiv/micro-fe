@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
-import { registerRemotes } from "@module-federation/runtime";
+import { registerRemotes, loadRemote } from "@module-federation/runtime";
+import type { RequestHandler } from "msw";
 import App from "./App.vue";
 import { fetchManifest } from "./manifest";
 import { restoreSession } from "./auth/login";
@@ -16,8 +17,30 @@ async function main() {
     manifest.microfrontends.map((mf) => ({ name: mf.name, entry: mf.entry, type: "module" })),
   );
 
-  // Mocked backend (MSW) intercepts /login and /session/restore.
-  const worker = createWorker();
+  // Each microfrontend exposes its own mock handlers the same way it exposes
+  // its screen, so the shell can combine them into a single backend instead of
+  // two mock servers. Promise.allSettled: one broken entry only loses that
+  // microfrontend's handlers, not the shell's ability to boot.
+  const remoteHandlerResults = await Promise.allSettled(
+    manifest.microfrontends.map(async (mf) => {
+      const mod = await loadRemote<{ handlers: RequestHandler[] }>(`${mf.name}/mockHandlers`);
+      return mod?.handlers ?? [];
+    }),
+  );
+  const remoteHandlerLists = remoteHandlerResults.map((result, i) => {
+    if (result.status === "rejected") {
+      console.error(
+        `Failed to load mock handlers for "${manifest.microfrontends[i].name}":`,
+        result.reason,
+      );
+      return [];
+    }
+    return result.value;
+  });
+
+  // Mocked backend (MSW) intercepts /login, /session/restore, and every
+  // microfrontend's /api/* endpoints.
+  const worker = createWorker(remoteHandlerLists.flat());
   await worker.start({ onUnhandledRequest: "bypass" });
 
   // Re-issue a token for a previously logged-in user so the session

@@ -230,6 +230,19 @@ importers:
         version: 0.2.9(@types/node@26.2.0)(@voidzero-dev/vite-plus-core@0.2.9(@types/node@26.2.0)(jiti@2.7.0)(typescript@7.0.2)(yaml@2.9.0))(jiti@2.7.0)(msw@2.15.0(@types/node@26.2.0)(typescript@7.0.2))(typescript@7.0.2)(yaml@2.9.0)
 
   apps/orders:
+    dependencies:
+      '@advancedfrontend/auth-session':
+        specifier: workspace:*
+        version: link:../../libs/auth-session
+      '@advancedfrontend/contracts':
+        specifier: workspace:*
+        version: link:../../libs/contracts
+      '@advancedfrontend/ui':
+        specifier: workspace:*
+        version: link:../../libs/ui
+      msw:
+        specifier: ^2.15.0
+        version: 2.15.0(@types/node@26.2.0)(typescript@7.0.2)
     devDependencies:
       '@module-federation/vite':
         specifier: 'catalog:'
@@ -294,6 +307,19 @@ importers:
         version: 5.2.0(@voidzero-dev/vite-plus-core@0.2.9(@types/node@26.2.0)(jiti@2.7.0)(typescript@7.0.2)(yaml@2.9.0))(@vue/compiler-sfc@3.5.41)(vue@3.5.41(typescript@7.0.2))
 
   apps/users:
+    dependencies:
+      '@advancedfrontend/auth-session':
+        specifier: workspace:*
+        version: link:../../libs/auth-session
+      '@advancedfrontend/contracts':
+        specifier: workspace:*
+        version: link:../../libs/contracts
+      '@advancedfrontend/ui':
+        specifier: workspace:*
+        version: link:../../libs/ui
+      msw:
+        specifier: ^2.15.0
+        version: 2.15.0(@types/node@26.2.0)(typescript@7.0.2)
     devDependencies:
       '@module-federation/vite':
         specifier: 'catalog:'

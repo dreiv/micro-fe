@@ -3,7 +3,7 @@ defineProps<{ className?: string }>();
 </script>
 
 <template>
-  <button :class="className ? `uikit-button ${className}` : 'uikit-button'" v-on="$attrs">
+  <button :class="className ? `uikit-button ${className}` : 'uikit-button'" v-bind="$attrs">
     <slot />
   </button>
 </template>

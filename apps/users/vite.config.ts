@@ -10,6 +10,7 @@ export default defineConfig({
       filename: "remoteEntry.js",
       exposes: {
         "./Root": "./src/Root.vue",
+        "./mockHandlers": "./src/mocks/handlers.ts",
       },
       shared: ["vue", "vue-router"],
     }),

@@ -3,33 +3,47 @@ import type { User } from "@advancedfrontend/contracts";
 
 type Listener = () => void;
 
-// Module-scope reactive state — the actual singleton. Only `internal.ts`
-// may mutate it; `index.ts` only reads `user`, and never exposes `token`
-// (RFC §7).
-const state = reactive<{ user: User | null; token: string | null }>({
-  user: null,
-  token: null,
-});
+type SessionState = { user: User | null; token: string | null };
 
-const listeners = new Set<Listener>();
+// The session must be a true singleton shared across the shell and every
+// microfrontend. Each microfrontend bundles its own copy of this lib (Module
+// Federation can't share a workspace source package), so we back the state
+// and listener set with a window global — the same pattern the event bus
+// uses — meaning all copies read/write the same reactive object. `vue` is
+// shared, so the reactive proxy is created by one Vue instance and works
+// across every copy.
+type GlobalSession = { state: SessionState; listeners: Set<Listener> };
+
+function getGlobal(): GlobalSession {
+  const w = window as unknown as { __appSession__?: GlobalSession };
+  if (!w.__appSession__) {
+    w.__appSession__ = {
+      state: reactive<SessionState>({ user: null, token: null }),
+      listeners: new Set<Listener>(),
+    };
+  }
+  return w.__appSession__;
+}
 
 export function getToken() {
-  return state.token;
+  return getGlobal().state.token;
 }
 
 export function getUser() {
-  return state.user;
+  return getGlobal().state.user;
 }
 
 export function setSession(nextToken: string | null, nextUser: User | null) {
-  state.token = nextToken;
-  state.user = nextUser;
-  listeners.forEach((listener) => listener());
+  const g = getGlobal();
+  g.state.token = nextToken;
+  g.state.user = nextUser;
+  g.listeners.forEach((listener) => listener());
 }
 
 export function subscribe(listener: Listener) {
-  listeners.add(listener);
+  const g = getGlobal();
+  g.listeners.add(listener);
   return () => {
-    listeners.delete(listener);
+    g.listeners.delete(listener);
   };
 }
