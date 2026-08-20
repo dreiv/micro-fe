@@ -3,6 +3,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import { registerRemotes } from "@module-federation/runtime";
 import App from "./App.vue";
 import { fetchManifest } from "./manifest";
+import { restoreSession } from "./auth/login";
+import { createWorker } from "./mocks/browser";
+import "@advancedfrontend/ui/tokens.css";
 
 async function main() {
   const manifest = await fetchManifest();
@@ -12,6 +15,14 @@ async function main() {
   registerRemotes(
     manifest.microfrontends.map((mf) => ({ name: mf.name, entry: mf.entry, type: "module" })),
   );
+
+  // Mocked backend (MSW) intercepts /login and /session/restore.
+  const worker = createWorker();
+  await worker.start({ onUnhandledRequest: "bypass" });
+
+  // Re-issue a token for a previously logged-in user so the session
+  // survives a real page reload (token itself never touches storage).
+  await restoreSession();
 
   const routes = [
     { path: "/", component: () => import("./Home.vue") },

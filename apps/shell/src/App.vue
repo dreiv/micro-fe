@@ -1,15 +1,23 @@
 <script setup lang="ts">
 import { inject } from "vue";
 import { RouterLink, RouterView } from "vue-router";
+import { useSession } from "@advancedfrontend/auth-session";
+import { logout } from "./auth/login";
+import LoginForm from "./auth/LoginForm.vue";
 import type { Manifest } from "./manifest";
 
 const manifest = inject<Manifest>("manifest")!;
+const { user, isAuthenticated } = useSession();
 </script>
 
 <template>
-  <div class="app">
+  <LoginForm v-if="!isAuthenticated" />
+  <div v-else class="app">
     <header class="header">
       <span class="logo">Backoffice</span>
+      <span class="spacer" />
+      <span class="profile">{{ user?.name }}</span>
+      <button class="logout-link" @click="logout">Log out</button>
     </header>
     <div class="body">
       <aside class="sidebar">
@@ -55,6 +63,23 @@ body {
 .logo {
   font-weight: 700;
   font-size: 18px;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.profile {
+  font-size: 14px;
+}
+
+.logout-link {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: underline;
 }
 
 .body {

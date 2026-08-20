@@ -20,3 +20,5 @@ peerDependencyRules:
     - vite
   allowedVersions:
     vite: "*"
+allowBuilds:
+  msw: set this to true or false
