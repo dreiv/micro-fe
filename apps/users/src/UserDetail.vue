@@ -4,6 +4,7 @@ import { RouterLink, useRoute } from "vue-router";
 import { useSession } from "@advancedfrontend/auth-session";
 import { Button } from "@advancedfrontend/ui";
 import { fetchUser, activateUser, deactivateUser, setUserRole } from "./api";
+import { emitUserDeactivated } from "./events";
 import type { UserRecord } from "./mocks/handlers";
 import type { Role } from "@advancedfrontend/contracts";
 
@@ -39,7 +40,9 @@ async function onActivate() {
 
 async function onDeactivate() {
   if (!record.value) return;
-  record.value = await deactivateUser(record.value.id);
+  const updated = await deactivateUser(record.value.id);
+  emitUserDeactivated(updated, sessionUser.value);
+  record.value = updated;
 }
 
 async function onRoleChange(e: Event) {

@@ -4,6 +4,7 @@ import { RouterLink, RouterView } from "vue-router";
 import { useSession } from "@advancedfrontend/auth-session";
 import { logout } from "./auth/login";
 import LoginForm from "./auth/LoginForm.vue";
+import NotificationCenter from "./NotificationCenter.vue";
 import type { Manifest } from "./manifest";
 
 const manifest = inject<Manifest>("manifest")!;
@@ -16,6 +17,7 @@ const { user, isAuthenticated } = useSession();
     <header class="header">
       <span class="logo">Backoffice</span>
       <span class="spacer" />
+      <NotificationCenter />
       <span class="profile">{{ user?.name }}</span>
       <button class="logout-link" @click="logout">Log out</button>
     </header>

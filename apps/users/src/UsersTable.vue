@@ -5,6 +5,7 @@ import { useSession } from "@advancedfrontend/auth-session";
 import { Button } from "@advancedfrontend/ui";
 import { useUsersFilters } from "./store";
 import { fetchUsers, activateUser, deactivateUser } from "./api";
+import { emitUserDeactivated } from "./events";
 import type { UserRecord } from "./mocks/handlers";
 
 const PAGE_SIZE = 10;
@@ -43,7 +44,8 @@ async function onActivate(id: string) {
 }
 
 async function onDeactivate(id: string) {
-  await deactivateUser(id);
+  const updated = await deactivateUser(id);
+  emitUserDeactivated(updated, sessionUser.value);
   await load();
 }
 </script>
