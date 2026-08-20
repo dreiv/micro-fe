@@ -317,6 +317,23 @@ importers:
         specifier: 'catalog:'
         version: 0.2.9(@types/node@26.2.0)(@voidzero-dev/vite-plus-core@0.2.9(@types/node@26.2.0)(jiti@2.7.0)(typescript@7.0.2)(yaml@2.9.0))(jiti@2.7.0)(typescript@7.0.2)(yaml@2.9.0)
 
+  libs/auth-session:
+    dependencies:
+      '@advancedfrontend/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      vue:
+        specifier: ^3.5.0
+        version: 3.5.41(typescript@7.0.2)
+
+  libs/contracts: {}
+
+  libs/ui:
+    dependencies:
+      vue:
+        specifier: ^3.5.0
+        version: 3.5.41(typescript@7.0.2)
+
   packages/utils:
     devDependencies:
       '@types/node':

@@ -1,0 +1,17 @@
+{
+  "name": "@advancedfrontend/auth-session",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Session store: read-only useSession() for microfrontends, write-only _setSession for the shell.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./internal": "./src/internal.ts"
+  },
+  "dependencies": {
+    "@advancedfrontend/contracts": "workspace:*"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0"
+  }
+}
