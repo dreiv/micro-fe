@@ -1,0 +1,16 @@
+{
+  "microfrontends": [
+    {
+      "name": "users",
+      "entry": "http://localhost:4201/remoteEntry.js",
+      "route": "/users",
+      "navLabel": "Users"
+    },
+    {
+      "name": "orders",
+      "entry": "http://localhost:4202/remoteEntry.js",
+      "route": "/orders",
+      "navLabel": "Orders"
+    }
+  ]
+}

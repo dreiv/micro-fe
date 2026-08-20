@@ -1,5 +1,9 @@
 <script setup lang="ts">
-// Step 1: static frame only. No routing, no Module Federation yet.
+import { inject } from "vue";
+import { RouterLink, RouterView } from "vue-router";
+import type { Manifest } from "./manifest";
+
+const manifest = inject<Manifest>("manifest")!;
 </script>
 
 <template>
@@ -8,9 +12,13 @@
       <span class="logo">Backoffice</span>
     </header>
     <div class="body">
-      <aside class="sidebar"></aside>
+      <aside class="sidebar">
+        <RouterLink v-for="mf in manifest.microfrontends" :key="mf.name" :to="mf.route" class="sidebar-link">
+          {{ mf.navLabel }}
+        </RouterLink>
+      </aside>
       <main class="content">
-        <p>Backoffice</p>
+        <RouterView />
       </main>
     </div>
   </div>
@@ -59,6 +67,23 @@ body {
   width: 200px;
   background: #fff;
   border-right: 1px solid #e5e7eb;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar-link {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: #374151;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.sidebar-link:hover {
+  background: #f3f4f6;
 }
 
 .content {
