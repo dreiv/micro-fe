@@ -1,6 +1,14 @@
 {
   "npm.scriptRunner": "vp",
   "editor.defaultFormatter": "oxc.oxc-vscode",
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "tsconfig.json": "tsconfig.*.json",
+    "vite.config.*": "vitest.config.*, playwright.config.*",
+    "package.json": "package-lock.json, pnpm-*, knip.json, .lighthouserc*, lighthouserc*",
+    "*.ts": "${capture}.spec.ts, ${capture}.stories.ts"
+  },
+  "oxc.fmt.configPath": "./vite.config.ts",
   "[javascript]": {
     "editor.defaultFormatter": "oxc.oxc-vscode"
   },
